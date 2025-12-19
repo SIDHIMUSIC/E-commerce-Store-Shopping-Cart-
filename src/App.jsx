@@ -15,13 +15,13 @@ const PRODUCTS = [
 function App() {
   const [currentView, setCurrentView] = useState('products');
   
-  // Form State (Payment Method added)
+  // Form State including Payment Method
   const [formData, setFormData] = useState({
     name: '',
     address: '',
     pincode: '',
     mobile: '',
-    paymentMethod: 'cod' // Default: Cash on Delivery
+    paymentMethod: 'cod' // Default option
   });
 
   const cartItems = useSelector((state) => state.cart.items);
@@ -40,12 +40,13 @@ function App() {
       return;
     }
     
-    // Payment Method Check
-    let paymentMsg = formData.paymentMethod === 'cod' 
-      ? '💵 Payment: Cash on Delivery' 
-      : `💳 Payment: Paid via ${formData.paymentMethod.toUpperCase()}`;
+    // Create detailed success message
+    let paymentMsg = '';
+    if (formData.paymentMethod === 'cod') paymentMsg = '💵 Payment: Cash on Delivery';
+    else if (formData.paymentMethod === 'upi') paymentMsg = '📱 Payment: Paid via UPI';
+    else paymentMsg = '💳 Payment: Paid via Card';
 
-    alert(`Order Successful! 🎉\n\n${paymentMsg}\nDelivering to: ${formData.name}`);
+    alert(`Order Successful! 🎉\n\n${paymentMsg}\nDelivering to: ${formData.name}\nAddress: ${formData.address}`);
     
     dispatch(clearCart());
     setFormData({ name: '', address: '', pincode: '', mobile: '', paymentMethod: 'cod' });
@@ -92,7 +93,7 @@ function App() {
                     <span className="item-icon">{item.image}</span>
                     <div className="item-details">
                       <h4>{item.title}</h4>
-                      <p>₹{item.price}</p>
+                      <p>₹{item.price} x {item.quantity}</p>
                     </div>
                     <div className="actions">
                       <button onClick={() => dispatch(removeFromCart(item.id))}>-</button>
@@ -112,13 +113,12 @@ function App() {
           </div>
         )}
 
-        {/* VIEW 3: CHECKOUT FORM + PAYMENT */}
+        {/* VIEW 3: CHECKOUT & PAYMENT */}
         {currentView === 'checkout' && (
           <div className="checkout-container">
             <h2>🚚 Delivery & Payment</h2>
             <form onSubmit={handlePlaceOrder}>
               
-              {/* Address Section */}
               <div className="form-section">
                 <h3>📍 Address Details</h3>
                 <div className="form-group">
@@ -139,44 +139,23 @@ function App() {
                 </div>
               </div>
 
-              {/* Payment Section (NEW) */}
               <div className="form-section">
                 <h3>💳 Payment Method</h3>
                 <div className="payment-options">
-                  
                   <label className={`payment-option ${formData.paymentMethod === 'upi' ? 'selected' : ''}`}>
-                    <input 
-                      type="radio" 
-                      name="paymentMethod" 
-                      value="upi" 
-                      checked={formData.paymentMethod === 'upi'}
-                      onChange={handleInputChange} 
-                    />
-                    <span>UPI (GPay / PhonePe / Paytm)</span>
+                    <input type="radio" name="paymentMethod" value="upi" checked={formData.paymentMethod === 'upi'} onChange={handleInputChange} />
+                    <span>UPI (GPay / PhonePe)</span>
                   </label>
 
                   <label className={`payment-option ${formData.paymentMethod === 'card' ? 'selected' : ''}`}>
-                    <input 
-                      type="radio" 
-                      name="paymentMethod" 
-                      value="card" 
-                      checked={formData.paymentMethod === 'card'}
-                      onChange={handleInputChange} 
-                    />
+                    <input type="radio" name="paymentMethod" value="card" checked={formData.paymentMethod === 'card'} onChange={handleInputChange} />
                     <span>Credit / Debit Card</span>
                   </label>
 
                   <label className={`payment-option ${formData.paymentMethod === 'cod' ? 'selected' : ''}`}>
-                    <input 
-                      type="radio" 
-                      name="paymentMethod" 
-                      value="cod" 
-                      checked={formData.paymentMethod === 'cod'}
-                      onChange={handleInputChange} 
-                    />
+                    <input type="radio" name="paymentMethod" value="cod" checked={formData.paymentMethod === 'cod'} onChange={handleInputChange} />
                     <span>Cash on Delivery (COD)</span>
                   </label>
-
                 </div>
               </div>
 
@@ -196,7 +175,6 @@ function App() {
             </form>
           </div>
         )}
-
       </main>
     </div>
   );
