@@ -3,16 +3,47 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addToCart, removeFromCart, clearCart } from './cartSlice';
 import './App.css';
 
-// Products Data
+// 🔥 FLIPKART STYLE DATASET (40+ ITEMS)
 const PRODUCTS = [
-  { id: 1, title: 'Super Sneakers', price: 2500, category: 'Fashion', image: '👟', description: 'High quality sneakers for running and casual wear. Very comfortable.' },
-  { id: 2, title: 'Cool Headphones', price: 1500, category: 'Electronics', image: '🎧', description: 'Noise cancelling headphones with deep bass sound.' },
-  { id: 3, title: 'Gaming Mouse', price: 800, category: 'Electronics', image: '🖱️', description: 'RGB gaming mouse with high DPI sensor for pro gamers.' },
-  { id: 4, title: 'Mechanical Keyboard', price: 4500, category: 'Electronics', image: '⌨️', description: 'Clicky mechanical keyboard with blue switches.' },
-  { id: 5, title: 'Smart Watch', price: 3000, category: 'Electronics', image: '⌚', description: 'Track your fitness, heart rate and sleep automatically.' },
-  { id: 6, title: 'Sunglasses', price: 1200, category: 'Fashion', image: '🕶️', description: 'UV protection sunglasses with stylish frame.' },
-  { id: 7, title: 'Cotton T-Shirt', price: 500, category: 'Fashion', image: '👕', description: '100% Cotton breathable fabric for summer.' },
-  { id: 8, title: 'Coffee Maker', price: 4000, category: 'Home', image: '☕', description: 'Brew fresh coffee instantly. Easy to clean.' },
+  // --- MOBILES ---
+  { id: 1, title: 'Apple iPhone 15 (Black, 128 GB)', price: 72999, category: 'Mobiles', image: '📱', description: 'Dynamic Island, 48MP Main Camera, A16 Bionic chip.' },
+  { id: 2, title: 'Samsung Galaxy S24 Ultra 5G', price: 129999, category: 'Mobiles', image: '📱', description: 'Titanium Grey, 200MP Camera, S-Pen, AI Features.' },
+  { id: 3, title: 'Realme 12 Pro+ 5G', price: 29999, category: 'Mobiles', image: '📱', description: 'Submarine Blue, Periscope Portrait Camera, 120Hz Curved Display.' },
+  { id: 4, title: 'POCO X6 Neo 5G', price: 15999, category: 'Mobiles', image: '📱', description: 'Martian Orange, AMOLED Display, 108MP Camera.' },
+  { id: 5, title: 'Motorola Edge 50 Pro', price: 31999, category: 'Mobiles', image: '📱', description: 'Luxe Lavender, 125W Charging, World’s 1st Pantone Camera.' },
+  { id: 6, title: 'Redmi 13C (Starshine Green)', price: 8999, category: 'Mobiles', image: '📱', description: 'Budget King. 50MP Camera, 5000mAh Battery.' },
+  { id: 7, title: 'Vivo V30 Pro', price: 41999, category: 'Mobiles', image: '📱', description: 'Zeiss Optics, Aura Light Portrait, Slimmest 5G Phone.' },
+
+  // --- ELECTRONICS ---
+  { id: 10, title: 'HP Pavilion 15 Laptop', price: 65000, category: 'Electronics', image: '💻', description: 'Intel i5 12th Gen, 16GB RAM, 512GB SSD, Backlit Keyboard.' },
+  { id: 11, title: 'Sony Bravia 55" 4K TV', price: 54990, category: 'Electronics', image: '📺', description: 'Google TV, X1 4K Processor, Dolby Audio.' },
+  { id: 12, title: 'boAt Airdopes 161', price: 999, category: 'Electronics', image: '🎧', description: '40 Hours Playback, ASAP Charge, Bluetooth 5.3.' },
+  { id: 13, title: 'Canon EOS 3000D Camera', price: 35999, category: 'Electronics', image: '📷', description: 'DSLR with 18-55mm Lens, 18MP, WiFi Support.' },
+  { id: 14, title: 'Apple Watch SE (2nd Gen)', price: 28900, category: 'Electronics', image: '⌚', description: 'GPS, Health Tracking, Crash Detection, Waterproof.' },
+
+  // --- FASHION (MEN & WOMEN) ---
+  { id: 20, title: 'Men Puffer Jacket', price: 1499, category: 'Fashion', image: '🧥', description: 'Black Hooded Jacket, Waterproof, heavy winter protection.' },
+  { id: 21, title: 'Nike Air Jordan High', price: 12999, category: 'Fashion', image: '👟', description: 'Premium basketball sneakers. Red and Black edition.' },
+  { id: 22, title: 'Women Banarasi Saree', price: 2499, category: 'Fashion', image: '👘', description: 'Red & Gold Silk Saree, perfect for weddings.' },
+  { id: 23, title: 'Ray-Ban Aviator Sunglasses', price: 5500, category: 'Fashion', image: '🕶️', description: 'Classic Gold Frame, Green Lens, 100% UV Protection.' },
+  { id: 24, title: 'Puma Sports Shoes', price: 1899, category: 'Fashion', image: '👟', description: 'Navy Blue Running Shoes, Soft Foam comfort.' },
+  { id: 25, title: 'Denim Jeans (Slim Fit)', price: 899, category: 'Fashion', image: '👖', description: 'Dark Blue Stretchable Denim for Men.' },
+  { id: 26, title: 'Kurta Set with Dupatta', price: 1299, category: 'Fashion', image: '👗', description: 'Cotton printed suit set for daily wear.' },
+
+  // --- HOME, KITCHEN & MEDICAL ---
+  { id: 30, title: 'Dr. Morepen BP Monitor', price: 1250, category: 'Home', image: '🩺', description: 'Fully automatic digital blood pressure checking machine.' },
+  { id: 31, title: 'Accu-Chek Glucometer', price: 999, category: 'Home', image: '🩸', description: 'Instant sugar check kit with 10 free strips.' },
+  { id: 32, title: 'Philips Mixer Grinder', price: 3299, category: 'Home', image: '🔌', description: '750 Watt Motor, 3 Jars, Heavy duty grinding.' },
+  { id: 33, title: 'Bosch Drill Machine Kit', price: 4500, category: 'Home', image: '🛠️', description: 'Professional tool kit for home repairs and drilling.' },
+  { id: 34, title: 'Double BedSheet (Cotton)', price: 699, category: 'Home', image: '🛏️', description: 'King size floral print bedsheet with 2 pillow covers.' },
+
+  // --- TOYS & FOOD ---
+  { id: 40, title: 'Cadbury Celebrations Pack', price: 350, category: 'Toys', image: '🍫', description: 'Assorted chocolates gift pack for festivals.' },
+  { id: 41, title: 'Ferrero Rocher (24 Pcs)', price: 949, category: 'Toys', image: '🍫', description: 'Luxury Hazelnut Chocolates.' },
+  { id: 42, title: 'Remote Control Ferrari', price: 1199, category: 'Toys', image: '🏎️', description: 'Rechargeable racing car with LED lights.' },
+  { id: 43, title: 'Soft Teddy Bear (4 Feet)', price: 1499, category: 'Toys', image: '🧸', description: 'Pink Giant Teddy, washable fabric, very soft.' },
+  { id: 44, title: 'California Almonds (1kg)', price: 899, category: 'Toys', image: '🌰', description: 'Premium Badam Giri for health.' },
+  { id: 45, title: 'Uno Card Game', price: 199, category: 'Toys', image: '🃏', description: 'Family fun card game for kids and adults.' },
 ];
 
 function App() {
@@ -56,37 +87,23 @@ function App() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // --- STRICT INDIAN VALIDATION LOGIC ---
+  // --- INDIAN VALIDATION ---
   const handlePlaceOrder = (e) => {
     e.preventDefault();
 
-    // 1. Empty Check
     if(!formData.name || !formData.address || !formData.pincode || !formData.mobile) {
-      alert("⚠️ Please fill all details!");
-      return;
+      alert("⚠️ Please fill all details!"); return;
     }
-
-    // 2. Indian Mobile Validation (Starts with 6-9, Total 10 digits)
-    const mobileRegex = /^[6-9]\d{9}$/;
-    if (!mobileRegex.test(formData.mobile)) {
-      alert("⚠️ Invalid Indian Mobile Number!\nMust be 10 digits and start with 6, 7, 8, or 9.");
-      return;
+    if (!/^[6-9]\d{9}$/.test(formData.mobile)) {
+      alert("⚠️ Invalid Mobile! (Must be 10 digits starting with 6-9)"); return;
     }
-
-    // 3. Indian Pincode Validation (6 digits, cannot start with 0)
-    const pincodeRegex = /^[1-9][0-9]{5}$/;
-    if (!pincodeRegex.test(formData.pincode)) {
-      alert("⚠️ Invalid Pincode!\nMust be 6 digits and cannot start with 0.");
-      return;
+    if (!/^[1-9][0-9]{5}$/.test(formData.pincode)) {
+      alert("⚠️ Invalid Pincode! (Must be 6 digits)"); return;
     }
-
-    // 4. Address Length
     if (formData.address.length < 10) {
-      alert("⚠️ Address is too short. Please enter detailed address.");
-      return;
+      alert("⚠️ Address too short!"); return;
     }
     
-    // Calculate Dates
     const today = new Date();
     const deliveryDate = new Date(today);
     deliveryDate.setDate(today.getDate() + 3); 
@@ -103,7 +120,6 @@ function App() {
 
     setOrders([newOrder, ...orders]);
     alert(`Order Successful! 🎉\nArriving by: ${deliveryDate.toDateString()}`);
-    
     dispatch(clearCart());
     setFormData({ name: '', address: '', pincode: '', mobile: '', paymentMethod: 'cod' });
     setCurrentView('orders');
@@ -112,7 +128,7 @@ function App() {
   return (
     <div className="app">
       <header>
-        <div className="logo" onClick={() => setCurrentView('products')}>My Shop 🛍️</div>
+        <div className="logo" onClick={() => setCurrentView('products')}>FlipMart 🛍️</div>
         <div className="nav-buttons">
           <button onClick={() => setCurrentView('orders')}>📦 Orders</button>
           <button className="cart-btn" onClick={() => setCurrentView('cart')}>
@@ -127,22 +143,25 @@ function App() {
           <>
             <div className="search-bar">
               <input 
-                type="text" placeholder="Search products..." 
+                type="text" placeholder="Search Mobiles, Shoes, Watch..." 
                 value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
+            
+            {/* NEW CATEGORY BUTTONS */}
             <div className="category-filters">
-              {["All", "Electronics", "Fashion", "Home"].map(cat => (
+              {["All", "Mobiles", "Electronics", "Fashion", "Home", "Toys"].map(cat => (
                 <button key={cat} className={selectedCategory === cat ? 'active' : ''} onClick={() => setSelectedCategory(cat)}>{cat}</button>
               ))}
             </div>
+
             <div className="products-grid">
               {filteredProducts.map((product) => (
                 <div key={product.id} className="product-card" onClick={() => openProductDetails(product)}>
                   <div className="product-img">{product.image}</div>
                   <h3>{product.title}</h3>
-                  <p>₹{product.price}</p>
-                  <button onClick={(e) => { e.stopPropagation(); dispatch(addToCart(product)); }}>Add</button>
+                  <p className="price">₹{product.price.toLocaleString('en-IN')}</p>
+                  <button onClick={(e) => { e.stopPropagation(); dispatch(addToCart(product)); }}>Add to Cart</button>
                 </div>
               ))}
             </div>
@@ -158,8 +177,13 @@ function App() {
               <div className="info">
                 <h1>{selectedProduct.title}</h1>
                 <span className="category-tag">{selectedProduct.category}</span>
-                <h2>₹{selectedProduct.price}</h2>
+                <h2>₹{selectedProduct.price.toLocaleString('en-IN')}</h2>
                 <p className="description">{selectedProduct.description}</p>
+                <div className="features-list">
+                    <p>✅ 7 Days Replacement Policy</p>
+                    <p>✅ Cash on Delivery Available</p>
+                    <p>✅ 1 Year Brand Warranty</p>
+                </div>
                 <div className="detail-actions">
                   <button className="add-btn" onClick={() => dispatch(addToCart(selectedProduct))}>Add to Cart 🛒</button>
                   <button className="buy-btn" onClick={() => { dispatch(addToCart(selectedProduct)); setCurrentView('cart'); }}>Buy Now ⚡</button>
@@ -174,7 +198,7 @@ function App() {
           <div className="cart-container">
             <h2>Your Cart</h2>
             {cartItems.length === 0 ? (
-              <div className="empty-cart"><p>Empty!</p><button onClick={() => setCurrentView('products')}>Shop Now</button></div>
+              <div className="empty-cart"><p>Cart is empty!</p><button onClick={() => setCurrentView('products')}>Start Shopping</button></div>
             ) : (
               <>
                 {cartItems.map((item) => (
@@ -182,7 +206,7 @@ function App() {
                     <span className="item-icon">{item.image}</span>
                     <div className="item-details">
                       <h4>{item.title}</h4>
-                      <p>₹{item.price} x {item.quantity}</p>
+                      <p>₹{item.price.toLocaleString('en-IN')} x {item.quantity}</p>
                     </div>
                     <div className="actions">
                       <button onClick={() => dispatch(removeFromCart(item.id))}>-</button>
@@ -191,34 +215,34 @@ function App() {
                     </div>
                   </div>
                 ))}
-                <div className="total"><h3>Total: ₹{totalAmount}</h3><button className="checkout-btn" onClick={() => setCurrentView('checkout')}>Checkout ➡️</button></div>
+                <div className="total"><h3>Total: ₹{totalAmount.toLocaleString('en-IN')}</h3><button className="checkout-btn" onClick={() => setCurrentView('checkout')}>Checkout ➡️</button></div>
               </>
             )}
           </div>
         )}
 
-        {/* VIEW 4: CHECKOUT (With Indian Validation) */}
+        {/* VIEW 4: CHECKOUT */}
         {currentView === 'checkout' && (
           <div className="checkout-container">
-            <h2>🚚 Delivery Details</h2>
+            <h2>🚚 Secure Checkout</h2>
             <form onSubmit={handlePlaceOrder}>
               <div className="form-group">
-                <label>Full Name</label>
-                <input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder="Required" />
+                <label>Name</label>
+                <input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder="Full Name" />
               </div>
               <div className="form-group">
                 <label>Mobile (+91)</label>
-                <input type="number" name="mobile" value={formData.mobile} onChange={handleInputChange} placeholder="e.g. 9800012345" />
+                <input type="number" name="mobile" value={formData.mobile} onChange={handleInputChange} placeholder="e.g. 9812345678" />
               </div>
               <div className="form-group">
                 <label>Address</label>
-                <textarea name="address" value={formData.address} onChange={handleInputChange} placeholder="House No, Area, Landmark..." rows="2"></textarea>
+                <textarea name="address" value={formData.address} onChange={handleInputChange} placeholder="House No, Colony, City..." rows="2"></textarea>
               </div>
               <div className="form-group">
-                <label>Pincode (India)</label>
-                <input type="number" name="pincode" value={formData.pincode} onChange={handleInputChange} placeholder="e.g. 110001" />
+                <label>Pincode</label>
+                <input type="number" name="pincode" value={formData.pincode} onChange={handleInputChange} placeholder="e.g. 800001" />
               </div>
-              <div className="summary-box"><h3>Payable: ₹{totalAmount}</h3></div>
+              <div className="summary-box"><h3>Payable: ₹{totalAmount.toLocaleString('en-IN')}</h3></div>
               <div className="form-actions">
                 <button type="button" className="back-btn" onClick={() => setCurrentView('cart')}>Back</button>
                 <button type="submit" className="confirm-btn">Confirm Order ✅</button>
@@ -237,9 +261,8 @@ function App() {
                   <div key={order.id} className="order-card">
                     <div className="order-header">
                       <strong>Order ID: #{order.id.toString().slice(-4)}</strong>
-                      <span className="order-price">₹{order.total}</span>
+                      <span className="order-price">₹{order.total.toLocaleString('en-IN')}</span>
                     </div>
-                    
                     <div className="delivery-tracker">
                       <div className="step completed">
                         <div className="dot">✔</div>
@@ -251,7 +274,6 @@ function App() {
                         <span>Arriving<br/><small>{order.deliveryDate}</small></span>
                       </div>
                     </div>
-
                     <div className="order-items">
                       {order.items.map(item => (
                         <div key={item.id} className="mini-item">
@@ -273,4 +295,4 @@ function App() {
 }
 
 export default App;
-
+                    
