@@ -2,48 +2,84 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addToCart, removeFromCart, clearCart } from './cartSlice';
 import './App.css';
-
-// 🔥 FLIPKART STYLE DATASET (40+ ITEMS)
+// 🔥 MEGA STORE DATA (60+ Items)
 const PRODUCTS = [
-  // --- MOBILES ---
-  { id: 1, title: 'Apple iPhone 15 (Black, 128 GB)', price: 72999, category: 'Mobiles', image: '📱', description: 'Dynamic Island, 48MP Main Camera, A16 Bionic chip.' },
-  { id: 2, title: 'Samsung Galaxy S24 Ultra 5G', price: 129999, category: 'Mobiles', image: '📱', description: 'Titanium Grey, 200MP Camera, S-Pen, AI Features.' },
-  { id: 3, title: 'Realme 12 Pro+ 5G', price: 29999, category: 'Mobiles', image: '📱', description: 'Submarine Blue, Periscope Portrait Camera, 120Hz Curved Display.' },
-  { id: 4, title: 'POCO X6 Neo 5G', price: 15999, category: 'Mobiles', image: '📱', description: 'Martian Orange, AMOLED Display, 108MP Camera.' },
-  { id: 5, title: 'Motorola Edge 50 Pro', price: 31999, category: 'Mobiles', image: '📱', description: 'Luxe Lavender, 125W Charging, World’s 1st Pantone Camera.' },
-  { id: 6, title: 'Redmi 13C (Starshine Green)', price: 8999, category: 'Mobiles', image: '📱', description: 'Budget King. 50MP Camera, 5000mAh Battery.' },
-  { id: 7, title: 'Vivo V30 Pro', price: 41999, category: 'Mobiles', image: '📱', description: 'Zeiss Optics, Aura Light Portrait, Slimmest 5G Phone.' },
+  // --- MOBILES (10 Items) ---
+  { id: 1, title: 'Apple iPhone 15 Pro Max', price: 159900, category: 'Mobiles', image: '📱', description: 'Natural Titanium, 256GB, A17 Pro Chip.' },
+  { id: 2, title: 'Samsung Galaxy S24 Ultra', price: 129999, category: 'Mobiles', image: '📱', description: 'AI Phone, 200MP Camera, S-Pen included.' },
+  { id: 3, title: 'OnePlus 12 (Flowy Emerald)', price: 64999, category: 'Mobiles', image: '📱', description: '16GB RAM, Snapdragon 8 Gen 3, Hasselblad Camera.' },
+  { id: 4, title: 'Pixel 8 Pro', price: 98999, category: 'Mobiles', image: '📱', description: 'Google AI, Best Camera for photos, Obsidian Black.' },
+  { id: 5, title: 'Nothing Phone (2a)', price: 23999, category: 'Mobiles', image: '📱', description: 'Transparent Design, Glyph Interface, Clean Android.' },
+  { id: 6, title: 'Redmi Note 13 Pro+', price: 29999, category: 'Mobiles', image: '📱', description: '200MP Camera, 120W Charging, Curved Display.' },
+  { id: 7, title: 'Realme 12 Pro 5G', price: 24999, category: 'Mobiles', image: '📱', description: 'Submarine Blue, Portrait Master Camera.' },
+  { id: 8, title: 'Poco X6 Neo', price: 15999, category: 'Mobiles', image: '📱', description: 'Super Slim, AMOLED Display, 5000mAh Battery.' },
+  { id: 9, title: 'Moto Edge 50 Fusion', price: 22999, category: 'Mobiles', image: '📱', description: 'Pantone Color, IP68 Waterproof, Curved Screen.' },
+  { id: 10, title: 'Vivo V30 Pro', price: 41999, category: 'Mobiles', image: '📱', description: 'Zeiss Optics, Aura Light, Best for Portraits.' },
 
-  // --- ELECTRONICS ---
-  { id: 10, title: 'HP Pavilion 15 Laptop', price: 65000, category: 'Electronics', image: '💻', description: 'Intel i5 12th Gen, 16GB RAM, 512GB SSD, Backlit Keyboard.' },
-  { id: 11, title: 'Sony Bravia 55" 4K TV', price: 54990, category: 'Electronics', image: '📺', description: 'Google TV, X1 4K Processor, Dolby Audio.' },
-  { id: 12, title: 'boAt Airdopes 161', price: 999, category: 'Electronics', image: '🎧', description: '40 Hours Playback, ASAP Charge, Bluetooth 5.3.' },
-  { id: 13, title: 'Canon EOS 3000D Camera', price: 35999, category: 'Electronics', image: '📷', description: 'DSLR with 18-55mm Lens, 18MP, WiFi Support.' },
-  { id: 14, title: 'Apple Watch SE (2nd Gen)', price: 28900, category: 'Electronics', image: '⌚', description: 'GPS, Health Tracking, Crash Detection, Waterproof.' },
+  // --- ELECTRONICS & LAPTOPS (10 Items) ---
+  { id: 11, title: 'MacBook Air M2', price: 99900, category: 'Electronics', image: '💻', description: 'Super fast M2 chip, 13.6 inch Liquid Retina Display.' },
+  { id: 12, title: 'HP Pavilion 15', price: 65000, category: 'Electronics', image: '💻', description: 'Intel i5 12th Gen, 16GB RAM, Backlit Keyboard.' },
+  { id: 13, title: 'Sony PlayStation 5 (Slim)', price: 49990, category: 'Electronics', image: '🎮', description: '4K Gaming, 1TB SSD, DualSense Controller.' },
+  { id: 14, title: 'iPad Air 5th Gen', price: 54900, category: 'Electronics', image: '📟', description: 'M1 Chip, 10.9 inch Display, Blue Color.' },
+  { id: 15, title: 'Sony WH-1000XM5', price: 29990, category: 'Electronics', image: '🎧', description: 'Best Noise Cancelling Headphones, 30Hr Battery.' },
+  { id: 16, title: 'JBL Flip 6 Speaker', price: 9999, category: 'Electronics', image: '🔊', description: 'Powerful Bass, Waterproof Bluetooth Speaker.' },
+  { id: 17, title: 'GoPro Hero 12 Black', price: 39990, category: 'Electronics', image: '📷', description: '5.3K Video, Waterproof, HyperSmooth Stabilization.' },
+  { id: 18, title: 'Apple Watch Series 9', price: 41900, category: 'Electronics', image: '⌚', description: 'S9 SiP, Double Tap Gesture, ECG & Blood Oxygen.' },
+  { id: 19, title: 'Logitech MX Master 3S', price: 8995, category: 'Electronics', image: '🖱️', description: 'Ultimate Productivity Mouse, Silent Clicks.' },
+  { id: 20, title: 'Canon EOS 200D II', price: 56995, category: 'Electronics', image: '📷', description: 'DSLR Camera with 18-55mm Lens, 4K Recording.' },
 
-  // --- FASHION (MEN & WOMEN) ---
-  { id: 20, title: 'Men Puffer Jacket', price: 1499, category: 'Fashion', image: '🧥', description: 'Black Hooded Jacket, Waterproof, heavy winter protection.' },
-  { id: 21, title: 'Nike Air Jordan High', price: 12999, category: 'Fashion', image: '👟', description: 'Premium basketball sneakers. Red and Black edition.' },
-  { id: 22, title: 'Women Banarasi Saree', price: 2499, category: 'Fashion', image: '👘', description: 'Red & Gold Silk Saree, perfect for weddings.' },
-  { id: 23, title: 'Ray-Ban Aviator Sunglasses', price: 5500, category: 'Fashion', image: '🕶️', description: 'Classic Gold Frame, Green Lens, 100% UV Protection.' },
-  { id: 24, title: 'Puma Sports Shoes', price: 1899, category: 'Fashion', image: '👟', description: 'Navy Blue Running Shoes, Soft Foam comfort.' },
-  { id: 25, title: 'Denim Jeans (Slim Fit)', price: 899, category: 'Fashion', image: '👖', description: 'Dark Blue Stretchable Denim for Men.' },
-  { id: 26, title: 'Kurta Set with Dupatta', price: 1299, category: 'Fashion', image: '👗', description: 'Cotton printed suit set for daily wear.' },
+  // --- FASHION & SHOES (10 Items) ---
+  { id: 21, title: 'Nike Air Jordan 1 High', price: 16995, category: 'Fashion', image: '👟', description: 'Lost & Found Chicago Colorway. Premium Sneaker.' },
+  { id: 22, title: 'Adidas Ultraboost Light', price: 14999, category: 'Fashion', image: '👟', description: 'Best running shoes, maximum energy return.' },
+  { id: 23, title: 'Puma Ferrari Drift Cat', price: 7999, category: 'Fashion', image: '👟', description: 'Motorsport shoes, sleek red design.' },
+  { id: 24, title: 'Zara Men Denim Jacket', price: 3990, category: 'Fashion', image: '🧥', description: 'Classic blue denim jacket with rips.' },
+  { id: 25, title: 'Ray-Ban Aviator Gold', price: 6590, category: 'Fashion', image: '🕶️', description: 'Classic green lens, gold frame sunglasses.' },
+  { id: 26, title: 'Casio G-Shock GA-2100', price: 8995, category: 'Fashion', image: '⌚', description: 'Carbon Core Guard, "CasiOak" All Black.' },
+  { id: 27, title: 'Levi\'s 511 Slim Jeans', price: 2499, category: 'Fashion', image: '👖', description: 'Stretchable dark blue denim for men.' },
+  { id: 28, title: 'Manyavar Kurta Set', price: 4999, category: 'Fashion', image: '👘', description: 'Silk Blend Kurta Pajama for weddings.' },
+  { id: 29, title: 'Women Banarasi Saree', price: 3499, category: 'Fashion', image: '🥻', description: 'Pure silk red saree with zari work.' },
+  { id: 30, title: 'Woodland Leather Boots', price: 3995, category: 'Fashion', image: '👢', description: 'Camel color tough outdoor boots.' },
 
-  // --- HOME, KITCHEN & MEDICAL ---
-  { id: 30, title: 'Dr. Morepen BP Monitor', price: 1250, category: 'Home', image: '🩺', description: 'Fully automatic digital blood pressure checking machine.' },
-  { id: 31, title: 'Accu-Chek Glucometer', price: 999, category: 'Home', image: '🩸', description: 'Instant sugar check kit with 10 free strips.' },
-  { id: 32, title: 'Philips Mixer Grinder', price: 3299, category: 'Home', image: '🔌', description: '750 Watt Motor, 3 Jars, Heavy duty grinding.' },
-  { id: 33, title: 'Bosch Drill Machine Kit', price: 4500, category: 'Home', image: '🛠️', description: 'Professional tool kit for home repairs and drilling.' },
-  { id: 34, title: 'Double BedSheet (Cotton)', price: 699, category: 'Home', image: '🛏️', description: 'King size floral print bedsheet with 2 pillow covers.' },
+  // --- HOME & KITCHEN (10 Items) ---
+  { id: 31, title: 'Philips Air Fryer', price: 8999, category: 'Home', image: '🍟', description: 'Fry with 90% less oil. Digital Touch Panel.' },
+  { id: 32, title: 'Dyson V8 Vacuum Cleaner', price: 32900, category: 'Home', image: '🧹', description: 'Cord-free powerful suction for home cleaning.' },
+  { id: 33, title: 'Godrej 1.5 Ton AC', price: 34990, category: 'Home', image: '❄️', description: '5 Star Inverter Split AC, Heavy Duty Cooling.' },
+  { id: 34, title: 'LG Microwave Oven', price: 12990, category: 'Home', image: '🥘', description: 'Convection oven for baking and grilling.' },
+  { id: 35, title: 'Milton Water Bottle Set', price: 999, category: 'Home', image: '🧴', description: 'Pack of 3 Thermosteel bottles, keeps water cold.' },
+  { id: 36, title: 'Prestige Gas Stove', price: 4500, category: 'Home', image: '🔥', description: '3 Burner Glass Top Gas Stove.' },
+  { id: 37, title: 'Bosch Washing Machine', price: 28990, category: 'Home', image: '🧺', description: '7kg Front Load, Fully Automatic.' },
+  { id: 38, title: 'Kent RO Water Purifier', price: 15500, category: 'Home', image: '💧', description: 'RO + UV + UF + TDS Control.' },
+  { id: 39, title: 'Sleepwell Mattress', price: 12000, category: 'Home', image: '🛏️', description: 'Queen Size Orthopedic Memory Foam Mattress.' },
+  { id: 40, title: 'Philips Smart Bulb', price: 699, category: 'Home', image: '💡', description: 'Wi-Fi enabled, 16 Million Colors LED.' },
 
-  // --- TOYS & FOOD ---
-  { id: 40, title: 'Cadbury Celebrations Pack', price: 350, category: 'Toys', image: '🍫', description: 'Assorted chocolates gift pack for festivals.' },
-  { id: 41, title: 'Ferrero Rocher (24 Pcs)', price: 949, category: 'Toys', image: '🍫', description: 'Luxury Hazelnut Chocolates.' },
-  { id: 42, title: 'Remote Control Ferrari', price: 1199, category: 'Toys', image: '🏎️', description: 'Rechargeable racing car with LED lights.' },
-  { id: 43, title: 'Soft Teddy Bear (4 Feet)', price: 1499, category: 'Toys', image: '🧸', description: 'Pink Giant Teddy, washable fabric, very soft.' },
-  { id: 44, title: 'California Almonds (1kg)', price: 899, category: 'Toys', image: '🌰', description: 'Premium Badam Giri for health.' },
-  { id: 45, title: 'Uno Card Game', price: 199, category: 'Toys', image: '🃏', description: 'Family fun card game for kids and adults.' },
+  // --- BEAUTY & GROOMING (5 Items) ---
+  { id: 41, title: 'Philips OneBlade Trimmer', price: 1499, category: 'Medical', image: '✂️', description: 'Hybrid Trimmer and Shaver for Men.' },
+  { id: 42, title: 'L\'Oreal Paris Serum', price: 499, category: 'Medical', image: '🧴', description: 'Hyaluronic Acid Serum for glowing skin.' },
+  { id: 43, title: 'Dyson Airwrap Styler', price: 45900, category: 'Medical', image: '💇‍♀️', description: 'Hair styling without extreme heat.' },
+  { id: 44, title: 'Nivea Men Grooming Kit', price: 850, category: 'Medical', image: '🧼', description: 'Face wash, Deodorant, Shaving Foam set.' },
+  { id: 45, title: 'Maybelline Lipstick Set', price: 999, category: 'Medical', image: '💄', description: 'Pack of 4 Matte Lipsticks.' },
+
+  // --- MEDICAL & HEALTH (5 Items) ---
+  { id: 46, title: 'Omron BP Monitor', price: 2100, category: 'Medical', image: '🩺', description: 'Accurate Blood Pressure checking machine.' },
+  { id: 47, title: 'Accu-Chek Active', price: 1050, category: 'Medical', image: '🩸', description: 'Glucometer for sugar test with 50 strips.' },
+  { id: 48, title: 'Dr. Ortho Back Support', price: 599, category: 'Medical', image: '🦴', description: 'Orthopedic Lumbar Support Belt.' },
+  { id: 49, title: 'Protein Powder (ON)', price: 3200, category: 'Medical', image: '💪', description: 'Optimum Nutrition Gold Standard Whey 1kg.' },
+  { id: 50, title: 'Digital Weight Machine', price: 799, category: 'Medical', image: '⚖️', description: 'Glass top digital weighing scale.' },
+
+  // --- TOYS & GAMING (6 Items) ---
+  { id: 51, title: 'LEGO Ferrari Car', price: 2999, category: 'Toys', image: '🏎️', description: 'Technic series building block car kit.' },
+  { id: 52, title: 'Barbie Dream House', price: 4500, category: 'Toys', image: '🏰', description: 'Large dollhouse with accessories.' },
+  { id: 53, title: 'Hot Wheels 10 Pack', price: 1299, category: 'Toys', image: '🚗', description: 'Set of 10 die-cast racing cars.' },
+  { id: 54, title: 'Remote Control Drone', price: 5999, category: 'Toys', image: '🚁', description: 'HD Camera drone with 20 mins flight time.' },
+  { id: 55, title: 'Giant Teddy Bear (5ft)', price: 1899, category: 'Toys', image: '🧸', description: 'Very soft pink teddy bear, washable.' },
+  { id: 56, title: 'Uno Flip Card Game', price: 299, category: 'Toys', image: '🃏', description: 'Double sided Uno cards for extra fun.' },
+
+  // --- FOOD & CHOCOLATES (5 Items) ---
+  { id: 60, title: 'Ferrero Rocher (24pcs)', price: 999, category: 'Food', image: '🍫', description: 'Premium hazelnut chocolates box.' },
+  { id: 61, title: 'Lindt Dark Chocolate', price: 450, category: 'Food', image: '🍫', description: '85% Cocoa Dark Chocolate bar.' },
+  { id: 62, title: 'Davidoff Coffee', price: 550, category: 'Food', image: '☕', description: 'Rich Aroma Instant Coffee 100g.' },
+  { id: 63, title: 'Happilo Almonds (500g)', price: 499, category: 'Food', image: '🌰', description: 'California almonds, 100% natural.' },
+  { id: 64, title: 'Nutella Spread (750g)', price: 720, category: 'Food', image: '🍯', description: 'Hazelnut cocoa spread family pack.' },
 ];
 
 function App() {
